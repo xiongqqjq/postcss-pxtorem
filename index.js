@@ -3,7 +3,7 @@ const filterPropList = require("./lib/filter-prop-list");
 const type = require("./lib/type");
 
 const defaults = {
-  rootValue: 16,
+  rootValue: 7.5, // design size / 100: ex: 750 /100
   unitPrecision: 5,
   selectorBlackList: [],
   propList: ["font", "font-size", "line-height", "letter-spacing"],
@@ -49,7 +49,7 @@ function createPxReplace(rootValue, unitPrecision, minPixelValue) {
     const pixels = parseFloat($1);
     if (pixels < minPixelValue) return m;
     const fixedVal = toFixed(pixels / rootValue, unitPrecision);
-    return fixedVal === 0 ? "0" : fixedVal + "rem";
+    return fixedVal === 0 ? "0" : fixedVal + "vw";
   };
 }
 
@@ -124,7 +124,7 @@ module.exports = (options = {}) => {
   let isExcludeFile = false;
   let pxReplace;
   return {
-    postcssPlugin: "postcss-pxtorem",
+    postcssPlugin: "postcss-pxtovw",
     Once(css) {
       const filePath = css.source.input.file;
       if (
@@ -160,7 +160,7 @@ module.exports = (options = {}) => {
 
       const value = decl.value.replace(pxRegex, pxReplace);
 
-      // if rem unit already exists, do not add or replace
+      // if vw unit already exists, do not add or replace
       if (declarationExists(decl.parent, decl.prop, value)) return;
 
       if (opts.replace) {
