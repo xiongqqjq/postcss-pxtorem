@@ -124,7 +124,7 @@ module.exports = (options = {}) => {
   let isExcludeFile = false;
   let pxReplace;
   return {
-    postcssPlugin: "postcss-pxtovw",
+    postcssPlugin: "pxtovw-processor",
     Once(css) {
       const filePath = css.source.input.file;
       if (
